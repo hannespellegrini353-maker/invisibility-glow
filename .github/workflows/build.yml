@@ -24,7 +24,7 @@ jobs:
       - name: Gradle einrichten
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.14'
+          gradle-version: 'current'
 
       - name: Mod bauen
         run: gradle build --no-daemon
