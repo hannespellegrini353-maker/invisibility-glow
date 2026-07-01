@@ -1,0 +1,72 @@
+plugins {
+    id 'fabric-loom' version '1.14.+'
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    // Loom fügt bereits die wichtigsten Fabric/Minecraft-Repositories automatisch hinzu.
+    mavenCentral()
+}
+
+loom {
+    // Split-Sourcesets werden hier bewusst NICHT verwendet, da die Mod
+    // rein clientseitig ist (siehe fabric.mod.json -> "environment": "client").
+}
+
+dependencies {
+    // Minecraft selbst
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+
+    // Aktuelle Yarn-Mappings (letzte Version vor der Umstellung auf offizielle Mojang-Mappings)
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+
+    // Fabric Loader
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // Fabric API
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+}
+
+java {
+    // Minecraft 1.21.11 benötigt Java 21
+    sourceCompatibility = JavaVersion.toVersion(project.java_version)
+    targetCompatibility = JavaVersion.toVersion(project.java_version)
+
+    withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = project.java_version as int
+    it.options.encoding = 'UTF-8'
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('fabric.mod.json') {
+        expand version: project.version
+    }
+}
+
+jar {
+    from('LICENSE') {
+        rename { "${it}_${project.archivesBaseName}" }
+    }
+}
+
+// Praktische Task, um sich die aufgelösten Versionen schnell anzeigen zu lassen.
+tasks.register('printVersions') {
+    doLast {
+        println "Minecraft:     ${project.minecraft_version}"
+        println "Yarn Mappings: ${project.yarn_mappings}"
+        println "Loader:        ${project.loader_version}"
+        println "Fabric API:    ${project.fabric_version}"
+    }
+}

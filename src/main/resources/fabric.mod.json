@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "invisglow",
+  "version": "${version}",
+  "name": "Invisibility Glow",
+  "description": "Zeigt unsichtbaren Spielern eine clientseitige Glow-Outline, ohne den Unsichtbarkeitseffekt zu entfernen.",
+  "authors": [
+    "DeinName"
+  ],
+  "contact": {
+    "sources": "https://example.com/invisibility-glow"
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/invisglow/icon.png",
+
+  "environment": "client",
+
+  "entrypoints": {
+    "client": [
+      "com.example.invisglow.client.InvisibilityGlowClient"
+    ]
+  },
+
+  "mixins": [
+    "mixins/invisglow.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "fabric-api": "*",
+    "minecraft": "1.21.11",
+    "java": ">=21"
+  },
+
+  "custom": {
+    "invisglow:config_version": 1
+  }
+}
